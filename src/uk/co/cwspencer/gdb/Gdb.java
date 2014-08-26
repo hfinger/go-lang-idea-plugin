@@ -4,6 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import ro.redeul.google.go.config.sdk.GoSdkData;
+import ro.redeul.google.go.ide.GoProjectSettings;
 import ro.redeul.google.go.sdk.GoSdkUtil;
 import uk.co.cwspencer.gdb.gdbmi.*;
 import uk.co.cwspencer.gdb.messages.*;
@@ -284,7 +285,8 @@ public class Gdb {
                 return;
             }
 
-            String[] goEnv = GoSdkUtil.getExtendedGoEnv(sdkData, projectDir, "");
+            GoProjectSettings.GoProjectSettingsBean settings = GoProjectSettings.getInstance(project).getState();
+            String[] goEnv = GoSdkUtil.getExtendedGoEnv(sdkData, projectDir, "", settings.prependSysGoPath, settings.appendSysGoPath);
 
             Process process = Runtime.getRuntime().exec(commandLine, goEnv, workingDirectoryFile);
             InputStream stream = process.getInputStream();

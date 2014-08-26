@@ -9,6 +9,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import ro.redeul.google.go.ide.GoProjectSettings;
 import ro.redeul.google.go.ide.ui.GoToolWindow;
 import ro.redeul.google.go.sdk.GoSdkUtil;
 
@@ -41,7 +42,8 @@ public class GoFmtProjectRunner extends AnAction {
             return;
         }
 
-        String[] goEnv = GoSdkUtil.getGoEnv(sdk, projectDir);
+        GoProjectSettings.GoProjectSettingsBean settings = GoProjectSettings.getInstance(project).getState();
+        String[] goEnv = GoSdkUtil.getGoEnv(sdk, projectDir, settings.prependSysGoPath, settings.appendSysGoPath);
         if (goEnv == null) {
             return;
         }

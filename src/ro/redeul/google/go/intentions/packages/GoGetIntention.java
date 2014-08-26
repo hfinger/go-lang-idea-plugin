@@ -18,6 +18,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
+import ro.redeul.google.go.ide.GoProjectSettings;
 import ro.redeul.google.go.intentions.Intention;
 import ro.redeul.google.go.intentions.IntentionExecutionException;
 import ro.redeul.google.go.lang.psi.toplevel.GoImportDeclaration;
@@ -147,7 +148,8 @@ public class GoGetIntention extends Intention {
             return;
         }
 
-        String[] goEnv = GoSdkUtil.getGoEnv(sdk, projectDir);
+        GoProjectSettings.GoProjectSettingsBean settings = GoProjectSettings.getInstance(project).getState();
+        String[] goEnv = GoSdkUtil.getGoEnv(sdk, projectDir, settings.prependSysGoPath, settings.appendSysGoPath);
         if (goEnv == null) {
             return;
         }

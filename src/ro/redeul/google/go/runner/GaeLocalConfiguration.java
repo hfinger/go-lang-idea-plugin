@@ -21,6 +21,7 @@ import com.intellij.openapi.util.WriteExternalException;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import ro.redeul.google.go.config.sdk.GoAppEngineSdkData;
+import ro.redeul.google.go.ide.GoProjectSettings;
 import ro.redeul.google.go.runner.ui.GaeRunConfigurationEditorForm;
 import ro.redeul.google.go.sdk.GoSdkUtil;
 
@@ -168,7 +169,8 @@ public class GaeLocalConfiguration extends ModuleBasedConfiguration<GoApplicatio
                     throw new CantRunException("Could not retrieve the project directory");
                 }
 
-                Map<String, String> sysEnv = GoSdkUtil.getExtendedSysEnv(sdkData, "", envVars);
+                GoProjectSettings.GoProjectSettingsBean settings = GoProjectSettings.getInstance(getProject()).getState();
+                Map<String, String> sysEnv = GoSdkUtil.getExtendedSysEnv(sdkData, "", envVars, settings.prependSysGoPath, settings.appendSysGoPath);
                 GeneralCommandLine commandLine = new GeneralCommandLine();
 
                 commandLine.setExePath(goExecName);

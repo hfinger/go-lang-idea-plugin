@@ -8,8 +8,11 @@ import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import ro.redeul.google.go.config.sdk.GoSdkData;
+import ro.redeul.google.go.ide.GoProjectSettings;
 import ro.redeul.google.go.ide.ui.GoToolWindow;
 import ro.redeul.google.go.sdk.GoSdkUtil;
+
+import java.util.Map;
 
 public class GoDebugSDK extends GoCommonDebugAction {
 
@@ -60,7 +63,8 @@ public class GoDebugSDK extends GoCommonDebugAction {
 
             toolWindow.printNormalMessage(String.format("%s -> %n", "Extended Go Env"));
 
-            String[] goEnv = GoSdkUtil.getExtendedGoEnv(sdkData, projectDir, "");
+            GoProjectSettings.GoProjectSettingsBean settings = GoProjectSettings.getInstance(project).getState();
+            String[] goEnv = GoSdkUtil.getExtendedGoEnv(sdkData, projectDir, "", settings.prependSysGoPath, settings.appendSysGoPath);
             for (String goenv : goEnv) {
                 toolWindow.printNormalMessage(String.format("%s%n", goenv));
             }

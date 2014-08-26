@@ -930,20 +930,25 @@ public class GoSdkUtil {
 
     @Nullable
     public static String[] getGoEnv(Sdk sdk, String projectDir) {
+        return getGoEnv(sdk, projectDir, true, false);
+    }
+
+    @Nullable
+    public static String[] getGoEnv(Sdk sdk, String projectDir, boolean prependSysGoPath, boolean appendSysGoPath) {
         if (sdk.getSdkType() instanceof GoSdkType) {
             GoSdkData sdkData = (GoSdkData) sdk.getSdkAdditionalData();
             if (sdkData == null) {
                 return null;
             }
 
-            return GoSdkUtil.getExtendedGoEnv(sdkData, projectDir, "");
+            return GoSdkUtil.getExtendedGoEnv(sdkData, projectDir, "", prependSysGoPath, appendSysGoPath);
         } else if (sdk.getSdkAdditionalData() instanceof GoAppEngineSdkData) {
             GoAppEngineSdkData sdkData = (GoAppEngineSdkData) sdk.getSdkAdditionalData();
             if (sdkData == null) {
                 return null;
             }
 
-            return GoSdkUtil.getExtendedGAEEnv(sdkData, projectDir, "");
+            return GoSdkUtil.getExtendedGAEEnv(sdkData, projectDir, "", prependSysGoPath, appendSysGoPath);
         }
 
         return null;
